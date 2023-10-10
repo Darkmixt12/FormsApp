@@ -14,16 +14,21 @@ export class RegisterPageComponent {
 
     public myForm : FormGroup = this.fb.group({
       name: ['', [Validators.required, Validators.pattern( this.validatorsservice.firstNameAndLastnamePattern) ]],
-      email: ['', [Validators.required, Validators.pattern( this.validatorsservice.emailPattern) ], [ EmailValidatorService] ],
+      //email: ['', [Validators.required, Validators.pattern( this.validatorsservice.emailPattern) ], [ new EmailValidator() ]],
+      email: ['', [Validators.required, Validators.pattern( this.validatorsservice.emailPattern) ], [ this.emailvalidator] ],
+
       username: ['', [Validators.required], this.validatorsservice.cantBeStrider],
       password: ['', [Validators.required, Validators.minLength(6)]],
       password2: ['', [Validators.required]],
+    },{
+      validators: [this.validatorsservice.isFieldOneEqualFieldTwo('password','password2')]
     });
 
 
     constructor(
       private fb : FormBuilder,
-      private validatorsservice: ValidatorsService
+      private validatorsservice: ValidatorsService,
+      private emailvalidator: EmailValidatorService
       ){}
 
 
